@@ -1,0 +1,116 @@
+---
+title: "Untitled"
+author: "Parker Gauthier"
+date: "4/15/2022"
+output: md
+---
+
+# Lott and Mustard Replication Excercise
+
+## Introduction
+
+  For years, the relationship between crime and gun laws has been a topic of significant contention in the United States. Some argue that restricting gun ownership and usage will deter gun violence, while those on the other end of the aisle believe in quite the opposite. Researchers John Lott and David Mustard aimed to clear up this argument in their paper, "Crime, Deterrence, and Right-to-Carry Concealed Handguns."  The authors attempt to tackle this problem by analyzing the effects of concealed carry laws on various crime rates using econometric models aimed at inferring causality.  The authors conclude that when states give their citizens the right to carry a concealed firearm, violent crime rates decline without a significant increase in accidental gun deaths.  Their findings are quite intriguing, but were their methods sound?
+```
+```
+  The goal of the analysis below will be to assess the models used by Lott and Mustard and see how they stack up to contemporary causal inference methods.  We will look at the same data used by the researchers and first attempt to replicate their results.  We will then used other predictive models to see if we see the same effects depicted by the researchers.  Ultimately, we will see what methods are the most effective in determining causal effects and highlight the implications of using a faulty model.
+  
+## Background and Economic Theory
+
+
+
+```{r include=FALSE}
+
+#loading packages
+
+if (!("librarian" %in% rownames(utils::installed.packages()))) {
+  utils::install.packages("librarian")
+}
+
+librarian::shelf( 
+  cran_repo = "https://cran.microsoft.com/",
+  ask = FALSE,
+  stats, 
+  here,
+  kableExtra,
+  ggthemes,
+  tidyverse,
+  lubridate,
+  haven,
+  lmtest,
+  gganimate,
+  gapminder,
+  stargazer,
+  snakecase,
+  mosaic,
+  dplyr,
+  esquisse,
+  plotly,
+  modelr,
+  rsample,
+  caret,
+  foreach,
+  parallel,
+  gamlr,
+  glmnet,
+  rpart,
+  rpart.plot,
+  rsample,
+  randomForest,
+  gbm,
+  pdp,
+  ggmap,
+  devtools,
+)
+
+here::i_am("code/include.R")
+```
+
+
+```{r include=FALSE}
+#Reading in the data
+
+Lott = read_dta("../data/Lott_Dataset.dta")
+
+```
+
+
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+# Table showing rollout
+
+# making data frame for states with year treated
+treat_table =  Lott %>%
+  select(state, shallf, year) %>%
+  group_by(state) %>% 
+  filter(shallf == 1) %>%
+  summarise(treatment_year = min(year)) %>% 
+  mutate(treatment_year = ifelse(treatment_year == 1977, yes = "Treated Entire Period", no = treatment_year), order = ifelse(treatment_year == "Treated Entire Period", yes = 1, no = treatment_year))
+
+#propper ordering
+treat_table = data.frame(treat_table[-1,]) %>%  arrange(order) %>% select(-order)
+
+
+knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption = "Table 1")
+```
+
+
+## Data
+
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+
+# Table with summary statistics
+
+sum_table1997 = Lott %>% 
+  select(state, year, ratind, ratvio, ratpro, ratmur, ratrap, ratrob, rataga, ratbur, ratlar, rataut) %>% 
+  group_by(state,year) %>% 
+  filter(year == 1977) %>% 
+  summarise(mean(ratvio), mean(ratind))
+
+sum_table2000 = Lott %>% 
+  select(state, year, ratind, ratvio) %>% 
+  group_by(state,year) %>% 
+  filter(year == 1992) %>% 
+  summarise(mean(ratvio), mean(ratind))
+
+asdf = inner_join(sum_table1997, sum_table2000, by = "state")
+
+```
