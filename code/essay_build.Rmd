@@ -69,7 +69,7 @@ here::i_am("code/include.R")
 ```{r include=FALSE}
 #Reading in the data
 
-Lott = read_dta("../data/Lott_Dataset.dta")
+Lott = read_dta(here("data/UpdatedStateLevelData-2010.dta"))
 
 ```
 
@@ -79,14 +79,13 @@ Lott = read_dta("../data/Lott_Dataset.dta")
 
 # making data frame for states with year treated
 treat_table =  Lott %>%
-  select(state, shallf, year) %>%
+  select(state, shalll, year) %>%
   group_by(state) %>% 
-  filter(shallf == 1) %>%
+  filter(shalll == 1) %>%
   summarise(treatment_year = min(year)) %>% 
-  mutate(treatment_year = ifelse(treatment_year == 1977, yes = "Treated Entire Period", no = treatment_year), order = ifelse(treatment_year == "Treated Entire Period", yes = 1, no = treatment_year))
-
-#propper ordering
-treat_table = data.frame(treat_table[-1,]) %>%  arrange(order) %>% select(-order)
+  mutate(treatment_year = ifelse(treatment_year < 1977, yes = "Treated Entire Period", no = treatment_year), order = ifelse(treatment_year == "Treated Entire Period", yes = 1, no = treatment_year)) %>%  
+  arrange(order) %>% 
+  select(-order)
 
 
 knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption = "Table 1")
@@ -100,11 +99,46 @@ knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption =
 # Table with summary statistics
 
 Lott_select = Lott %>% 
-  select(state, year, ratind, ratvio, ratpro, ratmur, ratrap, ratrob, rataga, ratbur, ratlar, rataut, murders, rapes, robbery, aggravated, violent, property, autotheft, larceny, burglary)
+  select(state, year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar)
 
-sum_tab = Lott_select %>% 
-  select(state, year, murders, rapes, robbery, aggravated, violent, property, autotheft, larceny, burglary) %>% 
-  summarise()
+namies = c("Arest Rates - Violent Crime", "Property Crime", "Murder", "Rape", "Robbery", "Burglary", "Larceny", "Auto Theft", "Crime Rates - Murder", "Rape", "Agravated Assault", "Robbery","Auto Theft", "Burglary", "Larceny")
+
+sum_tab_sd = Lott_select %>% 
+  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
+  filter(year >= 1977 & year <= 1992) %>% 
+  select(-year) %>% 
+  summarise_all(sd, na.rm = TRUE) %>%
+  round(2) %>% 
+  t()
+
+sum_tab_mean = Lott_select %>% 
+  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
+  filter(year >= 1977 & year <= 1992) %>% 
+  select(-year) %>% 
+  summarise_all(mean, na.rm = TRUE) %>% 
+  round(2) %>% 
+  t() %>% 
+  cbind(sum_tab_sd)
+
+sum_tab_sum = Lott_select %>% 
+  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
+  filter(year >= 1977 & year <= 1992) %>% 
+  select(-year) %>% 
+  summarise_all(sum, na.rm = TRUE) %>%
+  round(0) %>% 
+  t() %>% 
+  cbind(sum_tab_mean)
+
+row.names(sum_tab_sum) = namies
+
+kable(sum_tab_sum, col.names = c("N", "Mean", "Sd"), caption = "Summary Statistics")
+```
+
+## Empircal Model and Estimation
+
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+
+
 
 
 ```
