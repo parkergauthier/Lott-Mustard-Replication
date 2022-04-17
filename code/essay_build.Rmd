@@ -9,10 +9,10 @@ output: md
 
 ## Introduction
 
-  For years, the relationship between crime and gun laws has been a topic of significant contention in the United States. Some argue that restricting gun ownership and usage will deter gun violence, while those on the other end of the aisle believe in quite the opposite. Researchers John Lott and David Mustard aimed to clear up this argument in their paper, "Crime, Deterrence, and Right-to-Carry Concealed Handguns."  The authors attempt to tackle this problem by analyzing the effects of concealed carry laws on various crime rates using econometric models aimed at inferring causality.  The authors conclude that when states give their citizens the right to carry a concealed firearm, violent crime rates decline without a significant increase in accidental gun deaths.  Their findings are quite intriguing, but were their methods sound?
+  For years the relationship between crime and gun laws has been a topic of significant contention in the United States. Some argue that restricting gun ownership will deter gun violence, while those on the other end of the aisle believe in quite the opposite. Researchers John Lott and David Mustard aimed to clear up this argument in their paper, "Crime, Deterrence, and Right-to-Carry Concealed Handguns."  The authors attempt to tackle this problem by analyzing the effects of concealed carry laws on various crime rates using econometric models aimed at inferring causality.  The authors conclude that when states give their citizens the right to carry a concealed firearm, violent crime rates decline without a significant increase in accidental gun deaths.  Their findings are quite intriguing, but were their methods sound?
 ```
 ```
-  The goal of the analysis below will be to assess the models used by Lott and Mustard and see how they stack up to contemporary causal inference methods.  We will look at the same data used by the researchers and first attempt to replicate their results.  We will then used other predictive models to see if we see the same effects depicted by the researchers.  Ultimately, we will see what methods are the most effective in determining causal effects and highlight the implications of using a faulty model.
+  The goal of the analysis below will be to assess the models used by Lott and Mustard and see how they stack up to contemporary causal inference methods.  We will look at the same data used by the researchers and first attempt to replicate their results.  We will then used other predictive models to see if we see the same effects depicted by the researchers.  Ultimately, we will assess what methods are the most effective in determining causal effects and highlight the implications of using a faulty model.
   
 ## Background and Economic Theory
 
@@ -99,18 +99,12 @@ knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption =
 
 # Table with summary statistics
 
-sum_table1997 = Lott %>% 
-  select(state, year, ratind, ratvio, ratpro, ratmur, ratrap, ratrob, rataga, ratbur, ratlar, rataut) %>% 
-  group_by(state,year) %>% 
-  filter(year == 1977) %>% 
-  summarise(mean(ratvio), mean(ratind))
+Lott_select = Lott %>% 
+  select(state, year, ratind, ratvio, ratpro, ratmur, ratrap, ratrob, rataga, ratbur, ratlar, rataut, murders, rapes, robbery, aggravated, violent, property, autotheft, larceny, burglary)
 
-sum_table2000 = Lott %>% 
-  select(state, year, ratind, ratvio) %>% 
-  group_by(state,year) %>% 
-  filter(year == 1992) %>% 
-  summarise(mean(ratvio), mean(ratind))
+sum_tab = Lott_select %>% 
+  select(state, year, murders, rapes, robbery, aggravated, violent, property, autotheft, larceny, burglary) %>% 
+  summarise()
 
-asdf = inner_join(sum_table1997, sum_table2000, by = "state")
 
 ```
