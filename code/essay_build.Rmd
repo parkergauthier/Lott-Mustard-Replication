@@ -60,6 +60,13 @@ librarian::shelf(
   pdp,
   ggmap,
   devtools,
+  estimatr,
+  plm,
+  bacondecomp,
+  TwoWayFEWeights,
+  fixest,
+  glue,
+  did
 )
 
 here::i_am("code/include.R")
@@ -81,9 +88,9 @@ Lott = read_dta(here("data/UpdatedStateLevelData-2010.dta"))
 treat_table =  Lott %>%
   select(state, shalll, year) %>%
   group_by(state) %>% 
-  filter(shalll == 1) %>%
+  filter(shalll == 1 , year >= 1977 & year<=1992) %>%
   summarise(treatment_year = min(year)) %>% 
-  mutate(treatment_year = ifelse(treatment_year < 1977, yes = "Treated Entire Period", no = treatment_year), order = ifelse(treatment_year == "Treated Entire Period", yes = 1, no = treatment_year)) %>%  
+  mutate(treatment_year = ifelse(treatment_year <= 1977, yes = "Treated Entire Period", no = treatment_year), order = ifelse(treatment_year == "Treated Entire Period", yes = 1, no = treatment_year)) %>%  
   arrange(order) %>% 
   select(-order)
 
@@ -99,12 +106,12 @@ knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption =
 # Table with summary statistics
 
 Lott_select = Lott %>% 
-  select(state, year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar)
+  select(state, year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratvio, ratpro, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar)
 
-namies = c("Arest Rates - Violent Crime", "Property Crime", "Murder", "Rape", "Robbery", "Burglary", "Larceny", "Auto Theft", "Crime Rates - Murder", "Rape", "Agravated Assault", "Robbery","Auto Theft", "Burglary", "Larceny")
+namies = c("Arest Rates - Violent Crime", "Property Crime", "Murder", "Rape", "Robbery", "Burglary", "Larceny", "Auto Theft", "Crime Rates - Violent Crime", "Property Crime", "Murder", "Rape", "Agravated Assault", "Robbery","Auto Theft", "Burglary", "Larceny")
 
 sum_tab_sd = Lott_select %>% 
-  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
+  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratvio, ratpro, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
   filter(year >= 1977 & year <= 1992) %>% 
   select(-year) %>% 
   summarise_all(sd, na.rm = TRUE) %>%
@@ -112,7 +119,7 @@ sum_tab_sd = Lott_select %>%
   t()
 
 sum_tab_mean = Lott_select %>% 
-  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
+  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratvio, ratpro, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
   filter(year >= 1977 & year <= 1992) %>% 
   select(-year) %>% 
   summarise_all(mean, na.rm = TRUE) %>% 
@@ -120,23 +127,80 @@ sum_tab_mean = Lott_select %>%
   t() %>% 
   cbind(sum_tab_sd)
 
-sum_tab_sum = Lott_select %>% 
-  select(year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar) %>%
-  filter(year >= 1977 & year <= 1992) %>% 
-  select(-year) %>% 
-  summarise_all(sum, na.rm = TRUE) %>%
-  round(0) %>% 
-  t() %>% 
-  cbind(sum_tab_mean)
 
-row.names(sum_tab_sum) = namies
+row.names(sum_tab_mean) = namies
 
-kable(sum_tab_sum, col.names = c("N", "Mean", "Sd"), caption = "Summary Statistics")
+kable(sum_tab_mean, col.names = c("Mean", "Sd"), caption = "Summary Statistics")
 ```
 
 ## Empircal Model and Estimation
 
+  The first model we will look at will be similar to the model originally used by Lott & Mustard in their paper. This model, 'Twoway Fixed Effects,' is a type of difference-in-difference design where we compare our observations to a fixed effect to identify whether a treated group has a different trend than a control group. 
+  
 ```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+#TWFE
+Lott_twfe = Lott %>% 
+  filter(year >= 1977 & year <= 1992) %>% 
+  mutate(lvio = log(ratvio), lmur = log(ratmur), laga = log(rataga), lrob = log(ratrob), lpro = log(ratpro), lbur = log(ratbur), llar = log(ratlar), laut = log(rataut))
+
+
+
+model_fe = lm_robust(lvio ~ shalll + aovio + density + rpcpi + rpcim + rpcui + rpcrpo + ppwm1019 + ppwm2029 + ppwm3039 + ppwm4049 + ppwm5064 + ppwf1019 + ppwf2029 + ppwf3039 + ppwf4049 + ppwf5064 + ppbm1019 + ppbm2029 + ppbm3039 + ppbm4049 + ppbm5064 + ppbf1019 + ppbf2029 + ppbf3039 + ppbf4049 + ppbf5064 +ppnm1019 + ppnm2029 + ppnm3039 + ppnm4049 + ppnm5064 + ppnf1019 + ppnf1019 + ppnf2029 + ppnf3039 + ppnf4049 + ppnf5064, 
+                     data = Lott_twfe, 
+                     fixed_effect = ~fipsstat, 
+                     se_type = "stata")
+
+fe_summary = summary(model_fe)
+fe_summary
+```
+
+
+
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+#bacon decomp
+
+bacon_model = bacon(lvio ~ shalll,
+                    data = Lott_twfe,
+                    id_var = "fipsstat",
+                    time_var = "year")
+
+
+dd_estimate = sum(bacon_model$estimate*bacon_model$weight)
+
+dd_estimate
+
+```
+
+
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+#Calloway Sant'anna
+treat_table = treat_table %>% 
+  mutate(treatment_year = as.numeric(ifelse(treatment_year == "Treated Entire Period", 1977, treatment_year)))
+
+Lott_twfe = left_join(Lott_twfe, treat_table, by = "state") %>% 
+  mutate(treatment_year = as.numeric(ifelse(is.na(treatment_year) == TRUE, 0, treatment_year)))
+
+
+model_sa <- att_gt(yname = "lvio", # LHS variable
+               tname = "year", # time variable
+               idname = "fipsstat", # id variable
+               gname = "treatment_year", # first treatment period variable
+               data = Lott_twfe, # data
+               xformla = NULL, # no covariates
+               est_method = "dr", # "dr" is doubly robust. "ipw" is inverse probability weighting. "reg" is regression
+               control_group = "nevertreated", # set the comparison group which is either "nevertreated" or "notyettreated" 
+               bstrap = TRUE, # if TRUE compute bootstrapped SE
+               biters = 1000, # number of bootstrap iterations
+               print_details = FALSE, # if TRUE, print detailed results
+               clustervars = "fipsstat", # cluster level
+               panel = TRUE) # whether the data is panel or repeated cross-sectional
+
+
+summary(model_sa)
+
+```
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+
 
 
 
