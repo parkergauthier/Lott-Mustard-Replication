@@ -171,7 +171,7 @@ foreach(y = 1:len_) %do% {
   assign(model_names, model_fe)
   
   fname_twfe = paste0(model_names, ".RDs")
-  save(file = file.path("C:/Users/Parker/Documents/School/UT/Causal_Inference/Lott-Mustard-Replication", "output", "models", fname_twfe), list = "model_fe")
+  save(file = file.path(here(), "output", "models", fname_twfe), list = "model_fe")
 }
 ```
 
@@ -289,16 +289,16 @@ effects = foreach(y = 1:len_, .combine = rbind) %do% {
 } %>% 
   as.data.frame()
 
-colnames(effects) = c("Target Variable", "TWFE", "Calloway_SantAnna")
+colnames(effects) = c("Target Variable (Log)", "TWFE", "Calloway_SantAnna")
 rownames(effects) = NULL
 
 effects$TWFE = round(as.numeric(effects$TWFE), 4)
 effects$Calloway_SantAnna = round(as.numeric(effects$Calloway_SantAnna), 4)
 
 effects = effects %>% 
-  mutate("Target Variable" = ifelse(row_number()%%2 == 0, "", y_vars)) %>% 
+  mutate("Target Variable (Log)" = ifelse(row_number()%%2 == 0, "", c("Rate of Violent Crime", "Murder Rate", "Aggravated Assault Rate", "Burglary Rate", "Auto Crime Rate", "Property Crime Rate", "Rape Rate", "Robbery Rate", "Larceny Rate"))) %>% 
   mutate(TWFE = ifelse(row_number()%%2 == 0, paste0("(", TWFE, ")"), TWFE), 
-         Calloway_SantAnna = ifelse(row_number()%%2 == 0, paste0("(",Calloway_SantAnna, ")"),Calloway_SantAnna))
+         Calloway_SantAnna = ifelse(row_number()%%2 == 0, paste0("(",Calloway_SantAnna, ")"),Calloway_SantAnna)) 
 
 effects_table = stargazer(effects,
                           type= "text",
