@@ -1,0 +1,345 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Untitled},
+  pdfauthor={Parker Gauthier},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\title{Untitled}
+\author{Parker Gauthier}
+\date{4/15/2022}
+
+\begin{document}
+\maketitle
+
+\hypertarget{lott-and-mustard-replication-excercise}{%
+\section{Lott and Mustard Replication
+Excercise}\label{lott-and-mustard-replication-excercise}}
+
+\hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+For years the relationship between crime and gun laws has been a topic
+of significant contention in the United States. Some argue that
+restricting gun ownership will deter gun violence, while those on the
+other end of the aisle believe in quite the opposite. Researchers John
+Lott and David Mustard aimed to clear up this argument in their paper,
+``Crime, Deterrence, and Right-to-Carry Concealed Handguns.'' The
+authors attempt to tackle this problem by analyzing the effects of
+concealed carry laws on various crime rates using econometric models
+aimed at inferring causality. The authors conclude that when states give
+their citizens the right to carry a concealed firearm, violent crime
+rates decline without a significant increase in accidental gun deaths.
+Their findings are quite intriguing, but were their methods sound?
+
+\begin{verbatim}
+\end{verbatim}
+
+The goal of the analysis below will be to assess the models used by Lott
+and Mustard and see how they stack up to contemporary causal inference
+methods. We will look at the same data used by the researchers and first
+attempt to replicate their results. We will then used other predictive
+models to see if we see the same effects depicted by the researchers.
+Ultimately, we will assess what methods are the most effective in
+determining causal effects and highlight the implications of using a
+faulty model.
+
+\hypertarget{background-and-economic-theory}{%
+\subsection{Background and Economic
+Theory}\label{background-and-economic-theory}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-3}Table 1}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+State Name & Year Treated\\
+\hline
+Alabama & Treated Entire Period\\
+\hline
+Connecticut & Treated Entire Period\\
+\hline
+New Hampshire & Treated Entire Period\\
+\hline
+North Dakota & Treated Entire Period\\
+\hline
+South Dakota & Treated Entire Period\\
+\hline
+Vermont & Treated Entire Period\\
+\hline
+Washington & Treated Entire Period\\
+\hline
+Indiana & 1981\\
+\hline
+Maine & 1986\\
+\hline
+Florida & 1988\\
+\hline
+Virginia & 1989\\
+\hline
+Georgia & 1990\\
+\hline
+Pennsylvania & 1990\\
+\hline
+West Virginia & 1990\\
+\hline
+Idaho & 1991\\
+\hline
+Mississippi & 1991\\
+\hline
+Oregon & 1991\\
+\hline
+Montana & 1992\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{data}{%
+\subsection{Data}\label{data}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-4}Summary Statistics}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & Mean & Sd\\
+\hline
+Arest Rates - Violent Crime & 41.09 & 22.20\\
+\hline
+Property Crime & 16.92 & 4.68\\
+\hline
+Murder & 91.30 & 55.94\\
+\hline
+Rape & 41.02 & 17.39\\
+\hline
+Robbery & 31.46 & 13.59\\
+\hline
+Burglary & 13.80 & 4.57\\
+\hline
+Larceny & 18.54 & 5.20\\
+\hline
+Auto Theft & 22.35 & 37.61\\
+\hline
+Crime Rates - Violent Crime & 483.93 & 318.94\\
+\hline
+Property Crime & 4618.34 & 1210.46\\
+\hline
+Murder & 7.77 & 6.88\\
+\hline
+Rape & 33.98 & 15.07\\
+\hline
+Agravated Assault & 278.76 & 159.65\\
+\hline
+Robbery & 163.42 & 176.25\\
+\hline
+Auto Theft & 410.30 & 231.15\\
+\hline
+Burglary & 1239.34 & 417.76\\
+\hline
+Larceny & 2968.71 & 751.02\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{empircal-model-and-estimation}{%
+\subsection{Empircal Model and
+Estimation}\label{empircal-model-and-estimation}}
+
+The first model we will look at will be similar to the model originally
+used by Lott \& Mustard in their paper. This model, `Twoway Fixed
+Effects,' is a type of difference-in-difference design where we compare
+our observations to a fixed effect to identify whether a treated group
+has a different trend than a control group.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{effects =}\StringTok{ }\KeywordTok{foreach}\NormalTok{(}\DataTypeTok{y =} \DecValTok{1}\OperatorTok{:}\NormalTok{len_, }\DataTypeTok{.combine =}\NormalTok{ rbind) }\OperatorTok{%do%}\StringTok{ }\NormalTok{\{}
+\NormalTok{  y_var =}\StringTok{ }\NormalTok{y_vars[y]}
+  
+\NormalTok{  twfe_name =}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{"twfe"}\NormalTok{, y_var, }\DataTypeTok{sep =} \StringTok{"_"}\NormalTok{)}
+\NormalTok{  fname_twfe =}\StringTok{ }\KeywordTok{paste0}\NormalTok{(twfe_name, }\StringTok{".RDs"}\NormalTok{)}
+  
+\NormalTok{  bacon_name =}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{"twfe"}\NormalTok{, y_var, }\DataTypeTok{sep=}\StringTok{"_"}\NormalTok{)}
+\NormalTok{  fname_bacon =}\StringTok{ }\KeywordTok{paste0}\NormalTok{(bacon_name, }\StringTok{".RDs"}\NormalTok{)}
+  
+\NormalTok{  cs_name =}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{"CS"}\NormalTok{, y_var, }\DataTypeTok{sep =} \StringTok{"_"}\NormalTok{)}
+\NormalTok{  fname_cs =}\StringTok{ }\KeywordTok{paste0}\NormalTok{(cs_name, }\StringTok{".RDs"}\NormalTok{)}
+  
+\NormalTok{  sa_name =}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{"SA"}\NormalTok{, y_var, }\DataTypeTok{sep =} \StringTok{"_"}\NormalTok{)}
+\NormalTok{  fname_sa =}\StringTok{ }\KeywordTok{paste0}\NormalTok{(sa_name, }\StringTok{".RDs"}\NormalTok{)}
+  
+  \KeywordTok{load}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(}\KeywordTok{here}\NormalTok{(), }\StringTok{"output"}\NormalTok{, }\StringTok{"models"}\NormalTok{, fname_twfe))}
+  \KeywordTok{load}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(}\KeywordTok{here}\NormalTok{(), }\StringTok{"output"}\NormalTok{, }\StringTok{"models"}\NormalTok{, fname_cs))}
+  \KeywordTok{load}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(}\KeywordTok{here}\NormalTok{(), }\StringTok{"output"}\NormalTok{, }\StringTok{"models"}\NormalTok{, fname_sa))}
+  \KeywordTok{load}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(}\KeywordTok{here}\NormalTok{(), }\StringTok{"output"}\NormalTok{, }\StringTok{"models"}\NormalTok{, fname_bacon))}
+  
+\NormalTok{  estimates =}\StringTok{ }\KeywordTok{c}\NormalTok{(y_var, model_fe[[}\StringTok{"coefficients"}\NormalTok{]][[}\StringTok{"shalll"}\NormalTok{]], cs_model[[}\StringTok{"overall.att"}\NormalTok{]])}
+\NormalTok{  se =}\StringTok{ }\KeywordTok{c}\NormalTok{(y_var, model_fe[[}\StringTok{"se"}\NormalTok{]][[}\StringTok{"shalll"}\NormalTok{]], cs_model[[}\StringTok{"overall.se"}\NormalTok{]])}
+\NormalTok{  p =}\StringTok{ }\KeywordTok{c}\NormalTok{(y_var, model_fe[[}\StringTok{"coeftable"}\NormalTok{]][[}\StringTok{"Pr(>|t|)"}\NormalTok{]][}\DecValTok{1}\NormalTok{], cs_model[[}\StringTok{"overall.se"}\NormalTok{]])}
+  
+  \KeywordTok{rbind}\NormalTok{(estimates, se)}
+\NormalTok{\} }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{as.data.frame}\NormalTok{()}
+
+\KeywordTok{colnames}\NormalTok{(effects) =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Target Variable"}\NormalTok{, }\StringTok{"TWFE"}\NormalTok{, }\StringTok{"Calloway_SantAnna"}\NormalTok{)}
+\KeywordTok{rownames}\NormalTok{(effects) =}\StringTok{ }\OtherTok{NULL}
+
+\NormalTok{effects}\OperatorTok{$}\NormalTok{TWFE =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(effects}\OperatorTok{$}\NormalTok{TWFE), }\DecValTok{4}\NormalTok{)}
+\NormalTok{effects}\OperatorTok{$}\NormalTok{Calloway_SantAnna =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(effects}\OperatorTok{$}\NormalTok{Calloway_SantAnna), }\DecValTok{4}\NormalTok{)}
+
+\NormalTok{effects =}\StringTok{ }\NormalTok{effects }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\StringTok{"Target Variable"}\NormalTok{ =}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(}\KeywordTok{row_number}\NormalTok{()}\OperatorTok{%%}\DecValTok{2} \OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{, }\StringTok{""}\NormalTok{, y_vars)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{TWFE =} \KeywordTok{ifelse}\NormalTok{(}\KeywordTok{row_number}\NormalTok{()}\OperatorTok{%%}\DecValTok{2} \OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{, }\KeywordTok{paste0}\NormalTok{(}\StringTok{"("}\NormalTok{, TWFE, }\StringTok{")"}\NormalTok{), TWFE), }
+         \DataTypeTok{Calloway_SantAnna =} \KeywordTok{ifelse}\NormalTok{(}\KeywordTok{row_number}\NormalTok{()}\OperatorTok{%%}\DecValTok{2} \OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{, }\KeywordTok{paste0}\NormalTok{(}\StringTok{"("}\NormalTok{,Calloway_SantAnna, }\StringTok{")"}\NormalTok{),Calloway_SantAnna))}
+
+\NormalTok{effects_table =}\StringTok{ }\KeywordTok{stargazer}\NormalTok{(effects,}
+                          \DataTypeTok{type=} \StringTok{"text"}\NormalTok{,}
+                          \DataTypeTok{summary =} \OtherTok{FALSE}\NormalTok{,}
+                          \DataTypeTok{rownames =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ==========================================
+## Target Variable   TWFE   Calloway_SantAnna
+## ------------------------------------------
+## lvio            -0.0572        -0.01      
+##                 (0.0234)     (0.0248)     
+## lmur             0.0085       0.0129      
+##                 (0.0137)     (0.0122)     
+## laga            -0.0504       -0.0486     
+##                 (0.0396)     (0.0271)     
+## lbur            -0.0494        0.02       
+##                 (0.028)      (0.0298)     
+## laut            -0.0509       0.0048      
+##                 (0.0305)     (0.0419)     
+## lpro            -0.0178       0.0388      
+##                 (0.0313)      (0.037)     
+## lrap            -0.0243       -0.0158     
+##                 (0.0194)     (0.0157)     
+## lrob             0.014        0.0303      
+##                 (0.013)      (0.0159)     
+## llar             0.0345       0.0107      
+##                 (0.0297)     (0.0428)     
+## ------------------------------------------
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{write}\NormalTok{(effects_table, }\DataTypeTok{file=}\KeywordTok{file.path}\NormalTok{(}\KeywordTok{here}\NormalTok{(), }\StringTok{"output"}\NormalTok{, }\StringTok{"tables"}\NormalTok{, }\StringTok{"effects.txt"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}
