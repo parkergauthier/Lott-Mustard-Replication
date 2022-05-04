@@ -2,7 +2,11 @@
 title: "Untitled"
 author: "Parker Gauthier"
 date: "4/15/2022"
-output: md_document
+output: 
+  pdf_document:
+    latex_engine: xelatex
+header-includes:
+  - \usepackage{caption}
 ---
 
 # Lott and Mustard Replication Excercise
@@ -66,7 +70,8 @@ librarian::shelf(
   TwoWayFEWeights,
   fixest,
   glue,
-  did
+  did,
+  tinytex
 )
 
 here::i_am("code/include.R")
@@ -266,9 +271,7 @@ effects = foreach(y = 1:len_, .combine = rbind) %do% {
   
   twfe_name = paste("twfe", y_var, sep = "_")
   fname_twfe = paste0(twfe_name, ".RDs")
-  
-  bacon_name = paste("twfe", y_var, sep="_")
-  fname_bacon = paste0(bacon_name, ".RDs")
+
   
   cs_name = paste("CS", y_var, sep = "_")
   fname_cs = paste0(cs_name, ".RDs")
@@ -279,7 +282,7 @@ effects = foreach(y = 1:len_, .combine = rbind) %do% {
   load(file.path(here(), "output", "models", fname_twfe))
   load(file.path(here(), "output", "models", fname_cs))
   load(file.path(here(), "output", "models", fname_sa))
-  load(file.path(here(), "output", "models", fname_bacon))
+
   
   estimates = c(y_var, model_fe[["coefficients"]][["shalll"]], cs_model[["overall.att"]])
   se = c(y_var, model_fe[["se"]][["shalll"]], cs_model[["overall.se"]])
@@ -301,16 +304,42 @@ effects = effects %>%
          Calloway_SantAnna = ifelse(row_number()%%2 == 0, paste0("(",Calloway_SantAnna, ")"),Calloway_SantAnna)) 
 
 effects_table = stargazer(effects,
-                          type= "text",
+                          type= "latex",
                           summary = FALSE,
                           rownames = FALSE)
 
-write(effects_table, file=file.path(here(), "output", "tables", "effects.txt"))
+write(effects_table, file=file.path(here(), "output", "tables", "effects.tex"))
 ```
 
-```{r echo = FALSE}
-effects_table = stargazer(effects,
-                          type= "text",
-                          summary = FALSE,
-                          rownames = FALSE)
+
+```{r message=FALSE, warning=FALSE, results='asis'}
+baconator = foreach(y = 1:len_, .combine = rbind) %do% {
+  y_var = y_vars[y]
+  
+  bacon_name = paste("bacon", y_var, sep="_")
+  fname_bacon = paste0(bacon_name, ".RDs")
+  
+  load(file.path(here(), "output", "models", fname_bacon))
+  
+  estimates = c(y_var, bacon_model[1,])
+  estimates2 = c(y_var, bacon_model[3,])
+  
+  rbind(estimates, estimates2)
+} %>% 
+  data.frame()
+
+colnames(baconator) = c("Treated_Variable_(Log)", "Type", "Average_Estimate", "Weight")
+rownames(baconator) = NULL
+
+baconator = baconator %>% 
+  mutate(`Treated_Variable_(Log)` = ifelse(row_number()%%2 == 0, "", c("Rate of Violent Crime", "Murder Rate", "Aggravated Assault Rate", "Burglary Rate", "Auto Crime Rate", "Property Crime Rate", "Rape Rate", "Robbery Rate", "Larceny Rate")))
+
+
+baconator_table = stargazer(baconator, type = "latex", summary = FALSE, rownames = FALSE)
+
+baconator_table
+
 ```
+
+
+
