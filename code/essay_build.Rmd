@@ -1,12 +1,12 @@
 ---
-title: "Untitled"
+title: "Lott & Mustard Extension"
 author: "Parker Gauthier"
 date: "4/15/2022"
 output: 
   pdf_document:
     latex_engine: xelatex
 header-includes:
-  - \usepackage{caption}
+  - \usepackage{placeins}
 ---
 
 # Lott and Mustard Replication Excercise
@@ -84,9 +84,12 @@ here::i_am("code/include.R")
 Lott = read_dta(here("data/UpdatedStateLevelData-2010.dta"))
 
 ```
-
-
-```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+Below displays the rollout of treatment for each state by year:
+```
+```
+\FloatBarrier
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, results='asis'}
+knitr::opts_chunk$set(echo = TRUE)
 # Table showing rollout
 
 # making data frame for states with year treated
@@ -100,16 +103,27 @@ treat_table =  Lott %>%
   select(-order)
 
 
-knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption = "Table 1")
+knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption = "Rollout", format.args = list(float = FALSE)) %>% 
+  kable_styling(c("bordered","condensed"),
+                latex_options = c("hold_position"))
 ```
+\FloatBarrier
 
+
+```
+```
+Blah
 
 ## Data
 
-```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE}
+
+```
+```
+\FloatBarrier
+Table of summary statistics:
+```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, results='asis'}
 
 # Table with summary statistics
-
 Lott_select = Lott %>% 
   select(state, year, aovio, aopro, aomur, aorap, aorob, aobur, aolar, aoaut, ratvio, ratpro, ratmur, ratrap, rataga, ratrob, rataut, ratbur, ratlar)
 
@@ -135,8 +149,15 @@ sum_tab_mean = Lott_select %>%
 
 row.names(sum_tab_mean) = namies
 
-kable(sum_tab_mean, col.names = c("Mean", "Sd"), caption = "Summary Statistics")
+kable(sum_tab_mean, col.names = c("Mean", "Sd"), caption = "Summary Statistics", format.args = list(float = FALSE))%>% 
+  kable_styling(c("bordered","condensed"),
+                latex_options = c("hold_position"))
 ```
+\FloatBarrier
+```
+```
+Blah Blah Blah
+
 
 ## Empircal Model and Estimation
 
@@ -265,7 +286,7 @@ foreach(y = 1:len_) %do% {
 }
 ```
 
-```{r include = FALSE}
+```{r warning=FALSE, message=FALSE, warning=FALSE, echo=FALSE, results='asis'}
 effects = foreach(y = 1:len_, .combine = rbind) %do% {
   y_var = y_vars[y]
   
@@ -303,16 +324,18 @@ effects = effects %>%
   mutate(TWFE = ifelse(row_number()%%2 == 0, paste0("(", TWFE, ")"), TWFE), 
          Calloway_SantAnna = ifelse(row_number()%%2 == 0, paste0("(",Calloway_SantAnna, ")"),Calloway_SantAnna)) 
 
-effects_table = stargazer(effects,
-                          type= "latex",
-                          summary = FALSE,
-                          rownames = FALSE)
-
-write(effects_table, file=file.path(here(), "output", "tables", "effects.tex"))
+stargazer(effects,
+          type= "latex",
+          summary = FALSE,
+          rownames = FALSE,
+          header = FALSE)
 ```
 
+\FloatBarrier
+Blah
 
-```{r message=FALSE, warning=FALSE, results='asis'}
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 baconator = foreach(y = 1:len_, .combine = rbind) %do% {
   y_var = y_vars[y]
   
@@ -335,11 +358,55 @@ baconator = baconator %>%
   mutate(`Treated_Variable_(Log)` = ifelse(row_number()%%2 == 0, "", c("Rate of Violent Crime", "Murder Rate", "Aggravated Assault Rate", "Burglary Rate", "Auto Crime Rate", "Property Crime Rate", "Rape Rate", "Robbery Rate", "Larceny Rate")))
 
 
-baconator_table = stargazer(baconator, type = "latex", summary = FALSE, rownames = FALSE)
-
-baconator_table
-
+stargazer(baconator, type = "latex", summary = FALSE, rownames = FALSE, header = FALSE)
 ```
 
+\FloatBarrier
+Blah
 
+```{r SA Plots, echo=FALSE, message=FALSE, warning=FALSE}
+par(mfrow=c(1,1))
+iplot(SA_lvio,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Violent Crime")
+par(mfrow=c(1,2))
+iplot(SA_lpro,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Property Crime")
+iplot(SA_lmur,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Murder")
+par(mfrow=c(1,2))
+iplot(SA_lrap,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Rape")
+iplot(SA_laga,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Aggravated Assault")
+par(mfrow=c(1,2))
+iplot(SA_lrob,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Robbery")
+iplot(SA_lbur,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Burglary")
+par(mfrow=c(1,2))
+iplot(SA_llar,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Larceny")
+iplot(SA_laut,sep =.5,ref.line = -1,
+      xlab = 'Time to treatment',
+      main = 'Event study: Staggered treatment',
+      sub = "Auto Theft")
+```
+
+\FloatBarrier
 
