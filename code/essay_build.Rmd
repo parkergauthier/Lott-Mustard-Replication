@@ -155,12 +155,14 @@ kable(sum_tab_mean, col.names = c("Mean", "Sd"), caption = "Summary Statistics",
 \FloatBarrier
 ```
 ```
-
+The data also includes various demographic information such as population and percent population by race and sex.  This data is originally displayed at the county level, but through some data wrangling we will consolidate it to reflect state level information.
 
 
 ## Empircal Model and Estimation
 
-  The first model we will look at will be similar to the model originally used by Lott & Mustard in their paper. This model, 'Twoway Fixed Effects,' is a type of difference-in-difference design where we compare our observations to a fixed effect to identify whether a treated group has a different trend than a control group. 
+### Twoway Fixed Effects vs Callaway-Sant'anna
+
+  The first models we will look at will be Twoway Fixed Effects and Callaway-Sant'anna estimation.  Twoway Fixed Effects (the model used by Lott & Mustard) is a difference in differences approach to inferring causality between variables.  The model does so by looking at a the differences in relationships before and after a treatment (in our case this is the "Shall Issue" dummy variable) for treated individuals, and then compares these differences to those that are not treated.  This method unfortunately has issues when there is differential timing between treated groups which is the case in Lott & Mustard's study, suggesting that their estimations may be slightly flawed.  The Callaway-Sant'anna approach attempts to fix this issue by properly weighting the different groups (states treated in a particular year) by the amount of time they are treated. Below displays the different estimations by the two models:
   
 ```{r include = FALSE}
 #TWFE
@@ -331,9 +333,13 @@ stargazer(effects,
 ```
 
 \FloatBarrier
-Blah
+
+We can see that Twoway Fixed Effects reflects a significant negative relationship between violent crime and "Shall Issue," suggesting that concealed carry legalization decreases the rate of violent crime.  In contrast, the Calloway-Sant'anna estimator is not significantly different from zero.  By utilizing the weights given to us by this specification, we can see that our outcomes change quite drastically in this regard. It would appear that only the effect on Auto Crime is significantly negative.  Ultimately, this shows that the estimates reported in Lott & Mustard's paper are quite possibly not reflective of reality.
 
 
+### Bacon Decomposition
+
+The next method we will use is the Bacon Decomposition.  Below is a table of estimates showing aggregated 2x2 effects for each outcome.  The two groups here are "Earlier" and "Later," grouping together observation that were treated earlier in the period vs later. The table then depicts the average estimate from "Shall Issue," comparing treated group the not yet treated groups. Important to note is that the estimates for "Later vs Earlier" are based on counterfactuals as opposed to an untreated group since later treated groups have no yet-to-be-treated groups to be compared to.  This, paired with the length of the study and the differential timing, causes the estimates for "Earlier vs Later" to be weighted approximately three times higher than "Later vs Earlier."  We can see that the estimates for causal effects in this table are generally small, and the contrast in signage for some of the variable may further indicate insignificant effects.    
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 baconator = foreach(y = 1:len_, .combine = rbind) %do% {
   y_var = y_vars[y]
@@ -361,51 +367,71 @@ stargazer(baconator, type = "latex", summary = FALSE, rownames = FALSE, header =
 ```
 
 \FloatBarrier
-Blah
 
-```{r SA Plots, echo=FALSE, message=FALSE, warning=FALSE}
+### Event Study
+Finally, we will look at the Sun & Abraham Event Study.  This method plots the interaction weighted estimator of the treatment effect on our variables of interest over the time of treatment.  This estimator is derived from the difference in crime rates between the different groups based on the time of treatment.  It gives us a visual as to where the treatment effect is significant and how the treatment affected our outcome variables.  We will see that for most of the crime variables "Shall Issue" initially decreases the crime rate but this is followed by an uptick in the rate.  In the example of violent crime, the effect is significantly negative in the first years after the treatment but appears to go up with time (granted the positive effects are statistically insignificant, but this is still a movement away from the initial negative impact).  Furthermore, pretrends in the data do not seem to hold post-treatment.  The treatment appears to cause significant swings in the estimator.  Additionally, parallel trends would likely not hold in this scenario as different groups may experience different crime rates post treatment due to other factors than "Shall Issue."  
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 par(mfrow=c(1,1))
 iplot(SA_lvio,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Violent Crime")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 par(mfrow=c(1,2))
 iplot(SA_lpro,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Property Crime")
 iplot(SA_lmur,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Murder")
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 par(mfrow=c(1,2))
 iplot(SA_lrap,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Rape")
 iplot(SA_laga,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Aggravated Assault")
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 par(mfrow=c(1,2))
 iplot(SA_lrob,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Robbery")
 iplot(SA_lbur,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Burglary")
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 par(mfrow=c(1,2))
 iplot(SA_llar,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Larceny")
 iplot(SA_laut,sep =.5,ref.line = -1,
       xlab = 'Time to treatment',
-      main = 'Event study: Staggered treatment',
+      main = 'Staggered treatment',
       sub = "Auto Theft")
 ```
 
 \FloatBarrier
 
+ 
+## Conclusion
+
+Ultimately, this replication has given us insights into how the Twoway Fixed Effects design can give us misleading results. When using more contemporary methods, the impact of "Shall Issue" on our outcome variables depreciates in statistical significance and in some cases even switches sign.  Because of this, Lott & Mustard's findings are shown to be flawed and their conclusions require revisiting. When looking to build a better case for inferring causality with differential timing, the Calloway-Sant'Anna, Bacon, and Sun and Abraham designs give us much more reliable estimators.  With that said, these models still may have their flaws when working with this kind of data. "Shall Issue" laws are not the same for each state which may effect who is allowed to have a concealed firearm.  Since this treatment is not the same across all units in our population, this is not a Stable Unit Treatment Variables Variable. Other estimation methods may be necessary to extract the true causal effect from "Shall Issue" on crime rates.

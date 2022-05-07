@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.5)  6 MAY 2022 18:04
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.5)  6 MAY 2022 20:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -828,51 +828,35 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2] [3]
-File: essay_build_files/figure-latex/SA Plots-1.pdf Graphic file (type pdf)
-<use essay_build_files/figure-latex/SA Plots-1.pdf>
-File: essay_build_files/figure-latex/SA Plots-2.pdf Graphic file (type pdf)
-<use essay_build_files/figure-latex/SA Plots-2.pdf>
-File: essay_build_files/figure-latex/SA Plots-3.pdf Graphic file (type pdf)
-<use essay_build_files/figure-latex/SA Plots-3.pdf>
-File: essay_build_files/figure-latex/SA Plots-4.pdf Graphic file (type pdf)
-<use essay_build_files/figure-latex/SA Plots-4.pdf>
-File: essay_build_files/figure-latex/SA Plots-5.pdf Graphic file (type pdf)
-<use essay_build_files/figure-latex/SA Plots-5.pdf>
-
-Underfull \hbox (badness 10000) in paragraph at lines 350--355
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 350--355
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 350--355
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 350--355
-[]
- []
-
-[4] [5] [6] [7] [8] (./essay_build.aux)
+[2] [3] [4]
+File: essay_build_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
+<use essay_build_files/figure-latex/unnamed-chunk-11-1.pdf>
+[5]
+File: essay_build_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf)
+<use essay_build_files/figure-latex/unnamed-chunk-12-1.pdf>
+[6]
+File: essay_build_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
+<use essay_build_files/figure-latex/unnamed-chunk-13-1.pdf>
+[7]
+File: essay_build_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
+<use essay_build_files/figure-latex/unnamed-chunk-14-1.pdf>
+[8]
+File: essay_build_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf)
+<use essay_build_files/figure-latex/unnamed-chunk-15-1.pdf>
+[9] [10] (./essay_build.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `essay_build.out' has not changed.
-(rerunfilecheck)             Checksum: 8B20FE3B94B2D15A00C691546857FC6D;855.
+(rerunfilecheck)             Checksum: 3B1BA70EAD7FAE6A14E5C665442D43CF;1499.
  ) 
 Here is how much of TeX's memory you used:
- 18122 strings out of 478142
- 337876 string characters out of 5851623
- 790682 words of memory out of 5000000
- 38501 multiletter control sequences out of 15000+600000
+ 18127 strings out of 478142
+ 338297 string characters out of 5851623
+ 790859 words of memory out of 5000000
+ 38506 multiletter control sequences out of 15000+600000
  475776 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,9n,121p,305b,355s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,9n,121p,323b,334s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on essay_build.pdf (8 pages).
+Output written on essay_build.pdf (10 pages).
