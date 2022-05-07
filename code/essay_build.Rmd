@@ -13,10 +13,10 @@ header-includes:
 
 ## Introduction
 
-  For years the relationship between crime and gun laws has been a topic of significant contention in the United States. Some argue that restricting gun ownership will deter gun violence, while those on the other end of the aisle believe in quite the opposite. Researchers John Lott and David Mustard aimed to clear up this argument in their paper, "Crime, Deterrence, and Right-to-Carry Concealed Handguns."  The authors attempt to tackle this problem by analyzing the effects of concealed carry laws on various crime rates using econometric models aimed at inferring causality.  The authors conclude that when states give their citizens the right to carry a concealed firearm, violent crime rates decline without a significant increase in accidental gun deaths.  Their findings are quite intriguing, but were their methods sound?
+  For years the relationship between crime and gun laws has been a topic of significant contention in the United States. Some argue that restricting gun ownership will deter gun violence, while those on the other end of the aisle believe in quite the opposite. Researchers John Lott and David Mustard aimed to clear up this argument in their paper, "Crime, Deterrence, and Right-to-Carry Concealed Handguns."  The authors attempt to tackle this problem by analyzing the effects of concealed carry laws on various crime rates using econometric models aimed at inferring causality.  The authors conclude that when states give their citizens the right to carry a concealed firearm, violent crime rates decline without a significant increase in accidental gun deaths.  Their findings are  intriguing, but were their methods sound?
 ```
 ```
-  The goal of the analysis below will be to assess the models used by Lott and Mustard and see how they stack up to contemporary causal inference methods.  We will look at the same data used by the researchers and first attempt to replicate their results.  We will then used other predictive models to see if we see the same effects depicted by the researchers.  Ultimately, we will assess what methods are the most effective in determining causal effects and highlight the implications of using a faulty model.
+  The goal of the analysis below will be to assess the models used by Lott and Mustard and look to how they stack up to contemporary causal inference methods.  We will look at the same data used by the researchers and first attempt to replicate their results.  We will then used other predictive models to see if we see the same effects depicted by the researchers.  Ultimately, we will assess what methods are the most effective in determining causal effects and highlight the implications of using a faulty model.
   
 ## Background and Economic Theory
 
@@ -84,7 +84,7 @@ here::i_am("code/include.R")
 Lott = read_dta(here("data/UpdatedStateLevelData-2010.dta"))
 
 ```
-Below displays the rollout of treatment for each state by year:
+In their paper, Lott and Mustard look to states where concealed carry is legal and attempt to compare them to states where it is not.  Their goal was to show that the threat of a civilian carrying a firearm deterred crime.  The theory here is that criminals will be less inclined to risk committing a crime the greater the possibility their victims may be armed. They tackled this question by collecting data from the Federal Bureau of Investigation's Uniform Crime Report showing various crime rates between 1977 and 1992.  They also compiled census data to get demographic information for each state.  For each county in a state, there was information on the total instances of violent crimes such as murder, rape and assault. There were also metrics on property crimes like larceny, auto-theft, and burglary to see if criminals would substitute to less violent crimes. The demographic information gave insights on the population's size and makeup, allowing them to control their outcomes for these factors.  Furthermore, each state was coded with a dummy variable indicating "Shall Issue" for what years concealed carry was legal.  Below displays this rollout of concealed carry laws by state for those who legalized at some point prior or during the period:
 ```
 ```
 \FloatBarrier
@@ -112,15 +112,14 @@ knitr::kable(treat_table, col.names = c("State Name", "Year Treated"), caption =
 
 ```
 ```
-Blah
+By analyzing this rollout, the researchers were able to look at how crime trends changed due to the legalization of concealed carry.  They did this by utilizing a Two Way Fixed Effects research approach, comparing states that were treated with the concealed carry dummy to those who were not for each year. The goal here is to measure the average treatment effect of "Shall Issue" on the various crime rates.  Their ultimate findings from their least squares regressions were that the allowance of concealed carry decreased violent crime rates and did not increase accidental gun deaths.  They also argue that criminals did not significantly switch to more discrete, non-confrontational crimes such as larceny or auto-theft.  They claim that the social gains from legalizing are substantial, that the monetary gain from all states legalizing would be at least $5.74 billion.
 
 ## Data
 
-
+The data Lott & Mustard acquired contained a myriad of information on the crime rates for each of the 50 states between the years 1970 and 1992.  The key outcomes of interest are the rates per 100,000 of violent crime, property crime, murder, rape, robbery, burglary, larceny, and auto-theft.  Below displays a table of summary statistics for these crime rates along with the arrest rates for these crimes:
 ```
 ```
 \FloatBarrier
-Table of summary statistics:
 ```{r echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, results='asis'}
 
 # Table with summary statistics
@@ -156,7 +155,7 @@ kable(sum_tab_mean, col.names = c("Mean", "Sd"), caption = "Summary Statistics",
 \FloatBarrier
 ```
 ```
-Blah Blah Blah
+
 
 
 ## Empircal Model and Estimation
